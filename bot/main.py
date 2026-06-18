@@ -14,6 +14,8 @@ from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 from aiogram import types
+from aiogram.client.session.aiohttp import AiohttpSession
+
 
 from bot.buttons import main_menu
 from handlers.cow import dp as cow
@@ -24,6 +26,8 @@ from handlers.milkpdf import dp as milkpdf
 
 load_dotenv()
 
+PROXY_URL = 'http://proxy.server:3128'
+session = AiohttpSession(proxy=PROXY_URL)
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 dp = Dispatcher()
@@ -43,7 +47,8 @@ async def command_start_handler(msg: types.Message):
 
 
 async def main():
-    bot = Bot(token=BOT_TOKEN)
+    bot = Bot(token=BOT_TOKEN, session=session)
+    # bot = Bot(token=BOT_TOKEN)
     dp.include_router(cow)
     dp.include_router(cowpdf)
     dp.include_router(milk)
