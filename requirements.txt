@@ -2,6 +2,7 @@ aiofiles==25.1.0
 aiogram==3.29.0
 aiohappyeyeballs==2.6.2
 aiohttp==3.14.1
+aiohttp_socks==0.11.0
 aiosignal==1.4.0
 annotated-types==0.7.0
 asgiref==3.11.1
@@ -26,6 +27,7 @@ pydantic_core==2.46.4
 pydyf==0.12.1
 pyphen==0.17.2
 python-dotenv==1.2.2
+python-socks==2.8.1
 sqlparse==0.5.5
 tinycss2==1.5.1
 tinyhtml5==2.1.0
