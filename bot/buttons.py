@@ -17,11 +17,5 @@ def main_menu() -> InlineKeyboardMarkup:
         ]
     )
 
-def auto_time():
 
-    return ReplyKeyboardMarkup(
-        keyboard=[
-            [KeyboardButton("Vaqtni avtomatik kiritish 🕔")]
-        ]
-    )
 

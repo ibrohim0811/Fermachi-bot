@@ -18,6 +18,9 @@ from aiogram import types
 from bot.buttons import main_menu
 from handlers.cow import dp as cow
 from handlers.cowpdf import dp as cowpdf
+from handlers.milk import dp as milk
+from handlers.milkpdf import dp as milkpdf
+
 
 load_dotenv()
 
@@ -43,6 +46,8 @@ async def main():
     bot = Bot(token=BOT_TOKEN)
     dp.include_router(cow)
     dp.include_router(cowpdf)
+    dp.include_router(milk)
+    dp.include_router(milkpdf)
     await dp.start_polling(bot)
 
 

@@ -13,36 +13,37 @@ from asgiref.sync import sync_to_async
 from aiogram.fsm.context import FSMContext
 from datetime import date
 
-from bot.state import New
-from app.models import CowBorn
+from bot.state import MilkState
+from app.models import Milk
 from bot.buttons import main_menu
 
 dp = Router()
 
-def create_cowborn(name, time):
-    return CowBorn.objects.create(parent=name, date=time)
+def create_cowborn(litr, time):
+    return Milk.objects.create(litr=litr, date=time)
 
 
 
-@dp.callback_query(F.data == "new")
+@dp.callback_query(F.data == "milk")
 async def add_cow_start(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.delete()
-    await callback.message.answer("Tug'gan sigir nomini kiriting: ")
-    await state.set_state(New.parent)
+    await callback.message.answer("Necha litr sut topshirdingiz?: ")
+    await state.set_state(MilkState.litres)
 
 
 
-@dp.message(New.parent)
+@dp.message(MilkState.litres)
 async def add_time(msg: types.Message, state: FSMContext):
-    name = msg.text
+    litr = msg.text
+    if litr.isdigit():
+        litr = int(litr)
+    await state.update_data(litr=litr)
+    await msg.answer("Sut topshirilgan vaqtni kiriting: \nFormat: 2026-06-17 \n Avtomatik kiritish uchun /auto yozing.")
+    await state.set_state(MilkState.date)
 
-    await state.update_data(name=name)
-    await msg.answer("Qachon tug'gan yoki tug'di vaqtni kiriting\nFormat: 2026-06-17 \n Avtomatik kiritish uchun /auto yozing.")
-    await state.set_state(New.date)
 
 
-
-@dp.message(New.date)
+@dp.message(MilkState.date)
 async def save_time(msg: types.Message, state: FSMContext):
     if msg.text == "/auto":
         time = date.today()
@@ -55,10 +56,10 @@ async def save_time(msg: types.Message, state: FSMContext):
     #proccess
 
     data = await state.get_data()
-    name = data.get("name")
+    litr = data.get("litr")
     time = data.get("time")
     try:
-        await sync_to_async(create_cowborn)(name, time)
+        await sync_to_async(create_cowborn)(litr, time)
         await msg.answer("Saqlandi ✅")
         await msg.answer("Menudan birini tanlang: ", reply_markup=main_menu())
     except Exception as e:

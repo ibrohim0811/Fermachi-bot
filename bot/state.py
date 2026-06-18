@@ -5,5 +5,6 @@ class New(StatesGroup):
     date = State()
 
 
-class Milk(StatesGroup):
-    pass
+class MilkState(StatesGroup):
+    litres = State()
+    date = State()
