@@ -32,7 +32,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 dp = Dispatcher()
 
-admins = [195066733, 5020646658, 45874855, 938736625]
+admins = [195066733, 5020646658, 45874855, 938736625, 1208570065]
 
 @dp.message(Command('start'))
 async def command_start_handler(msg: types.Message):
